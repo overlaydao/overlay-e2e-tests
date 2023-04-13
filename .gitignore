@@ -1,0 +1,29 @@
+# jetbrains IDE setting file.
+.idea/
+
+# lock
+*.lock
+
+# pids
+*.pid
+*.seed
+
+# for Windows
+Thumbs.db
+Desktop.ini
+
+# for OSX
+.DS_Store
+
+# swp
+*.swp
+
+# direnv
+.envrc
+
+# .env
+.env
+
+# Rust specific ignores
+target/
+!Cargo.lock
