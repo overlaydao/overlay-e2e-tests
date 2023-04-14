@@ -27,3 +27,6 @@ Desktop.ini
 # Rust specific ignores
 target/
 !Cargo.lock
+
+# docker compose container data
+.docker-data/

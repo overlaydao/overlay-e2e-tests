@@ -2,20 +2,20 @@
 protocolVersion = 5
 
 [out]
-updateKeys = "./update-keys"
-accountKeys = "./accounts"
-bakerKeys = "./bakers"
-identityProviders = "./idps"
-anonymityRevokers = "./ars"
-genesis = "./genesis.dat"
-cryptographicParameters = "./global"
+updateKeys = "/root/workdir/genesis/update-keys"
+accountKeys = "/root/workdir/genesis/accounts"
+bakerKeys = "/root/workdir/genesis/bakers"
+identityProviders = "/root/workdir/genesis/idps"
+anonymityRevokers = "/root/workdir/genesis/ars"
+genesis = "/root/workdir/genesis/genesis.dat"
+cryptographicParameters = "/root/workdir/genesis/global"
 deleteExisting = true
-genesisHash = "./genesis_hash"
+genesisHash = "/root/workdir/genesis/genesis_hash"
 
 [cryptographicParameters]
 kind = "generate"
 # A free-form string used to distinguish between different chains even if they share other parameters.
-genesisString = "kumanote local single"
+genesisString = "overlay-local-dev"
 
 [[anonymityRevokers]]
 kind = "fresh"
