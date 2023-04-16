@@ -1,0 +1,18 @@
+[package]
+name = "overlay-e2e-tests"
+version = "0.1.0"
+authors = ["Hiroki Tanaka <support@kumano-te.com>"]
+edition = "2021"
+license-file = "LICENSE"
+include = ["README.md"]
+publish = false
+repository = "https://github.com/overlaydao/overlay-e2e-tests"
+rust-version = "1.68.1"
+
+[dependencies]
+anyhow = { version = "1.0.70", features = ["backtrace"] }
+thiserror = "1.0.40"
+clap = { version = "4.2.2", features = ["cargo", "derive"] }
+futures = { version = "0.3.28" }
+tokio = { version = "1.27.0", features = ["full"] }
+concordium-rust-sdk = { version = "2.3.0" }
