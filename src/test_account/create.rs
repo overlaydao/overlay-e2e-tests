@@ -5,7 +5,6 @@ use concordium_rust_sdk::{
         self,
         types::{KeyIndex, KeyPair, TransactionTime},
     },
-    endpoints::{Client as NodeClient, Endpoint},
     id::{
         constants::{ArCurve, AttributeKind, IpPairing},
         curve_arithmetic::{Curve, Value},
@@ -19,6 +18,7 @@ use concordium_rust_sdk::{
         },
     },
     types::transactions::{BlockItem, Payload},
+    v2::{BlockIdentifier, Client as NodeClient, Endpoint},
 };
 use rand::thread_rng;
 use std::path::PathBuf;
@@ -29,7 +29,7 @@ pub struct CreateTestAccountArgs {
     #[arg(
         long,
         help = "GRPC interface of the node.",
-        default_value = "http://localhost:10000"
+        default_value = "http://localhost:11000"
     )]
     node: Endpoint,
 
@@ -66,14 +66,11 @@ impl CreateTestAccountArgs {
             ))
         })?;
 
-        let mut node_client = NodeClient::connect(self.node, "rpcadmin".to_string()).await?;
-        let last_finalized_block_hash = node_client
-            .get_consensus_status()
-            .await?
-            .last_finalized_block;
+        let mut node_client = NodeClient::new(self.node).await?;
         let global_context = node_client
-            .get_cryptographic_parameters(&last_finalized_block_hash)
-            .await?;
+            .get_cryptographic_parameters(&BlockIdentifier::Best)
+            .await?
+            .response;
 
         let created_at = YearMonth::now();
         let valid_to = if let Some(year_month_str) = self.valid_to.as_deref() {
