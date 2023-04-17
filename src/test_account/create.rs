@@ -1,10 +1,7 @@
 use crate::{Error, Result};
 use clap::Args;
 use concordium_rust_sdk::{
-    common::{
-        self,
-        types::{KeyIndex, KeyPair, TransactionTime},
-    },
+    common::types::{KeyIndex, KeyPair, TransactionTime},
     id::{
         account_holder,
         constants::{ArCurve, AttributeKind, IpPairing},
@@ -133,7 +130,7 @@ impl CreateTestAccountArgs {
             _phantom: Default::default(),
         };
         // build up initial account data
-        let credential_data = CredentialData {
+        let init_account_credential_data = CredentialData {
             keys: vec![(KeyIndex::from(0), KeyPair::generate(&mut rng))]
                 .into_iter()
                 .collect(),
@@ -155,8 +152,8 @@ impl CreateTestAccountArgs {
             id_cred_pub: ArCurve::generate(&mut rng),
             reg_id: cred_id,
             vk_acc: CredentialPublicKeys {
-                keys: credential_data.get_public_keys(),
-                threshold: credential_data.get_threshold(),
+                keys: init_account_credential_data.get_public_keys(),
+                threshold: init_account_credential_data.get_threshold(),
             },
         };
         let initial_account_address = account_address_from_registration_id(&pub_info_for_ip.reg_id);
@@ -174,22 +171,6 @@ impl CreateTestAccountArgs {
                 icdi: initial_credential_deployment_info,
             },
         });
-
-        // compute destination
-        let output_file = if let Some(output) = self.output {
-            output
-        } else {
-            let mut output = std::env::current_dir().expect("must retrieve current directory...");
-            output.push("accounts");
-            output.push(format!("{}.json", initial_account_address));
-            output
-        };
-        if let Some(parent_dir) = output_file.parent() {
-            if !parent_dir.exists() {
-                println!("output directory created: {:?}", parent_dir);
-                std::fs::create_dir_all(parent_dir)?;
-            }
-        }
 
         println!(
             "let's send init account transaction for {}",
@@ -235,8 +216,8 @@ impl CreateTestAccountArgs {
         let id_use_data = IdObjectUseData { aci, randomness };
         let threshold = Threshold(1);
         let initial_account = InitialAccountData {
-            keys: credential_data.keys,
-            threshold: credential_data.threshold,
+            keys: init_account_credential_data.keys,
+            threshold: init_account_credential_data.threshold,
         };
         let (pio, _) =
             account_holder::generate_pio(&ip_context, threshold, &id_use_data, &initial_account)
@@ -272,12 +253,18 @@ impl CreateTestAccountArgs {
             &SystemAttributeRandomness {},
             &Either::Left(expiry),
         )?;
+        let first_account_address =
+            account_address_from_registration_id(&credential_deployment_info.values.cred_id);
         let first_account_transaction = BlockItem::<Payload>::from(AccountCredentialMessage {
             message_expiry: expiry,
             credential: AccountCredential::Normal {
                 cdi: credential_deployment_info,
             },
         });
+        println!(
+            "let's send first account transaction for {}",
+            first_account_address
+        );
         let first_account_transaction_hash = node_client
             .send_block_item(&first_account_transaction)
             .await?;
@@ -286,13 +273,27 @@ impl CreateTestAccountArgs {
             first_account_transaction_hash
         );
 
-        // let initial_account_keys = AccountKeys::from(credential_data);
-        /*
+        // output WalletAccount json file
+        let output_file = if let Some(output) = self.output {
+            output
+        } else {
+            let mut output = std::env::current_dir().expect("must retrieve current directory...");
+            output.push("accounts");
+            output.push(format!("{}.json", initial_account_address));
+            output
+        };
+        if let Some(parent_dir) = output_file.parent() {
+            if !parent_dir.exists() {
+                println!("output directory created: {:?}", parent_dir);
+                std::fs::create_dir_all(parent_dir)?;
+            }
+        }
+
+        let first_account_keys = AccountKeys::from(first_account_credential_data);
         serde_json::to_writer_pretty(
             std::fs::File::create(output_file)?,
-            &serde_json::json!({"address": address, "keys": initial_account_keys, "encryptionSecretKey": common::base16_encode_string(&cred_id_exponent), "transactionHash": transaction_hash}),
+            &serde_json::json!({"address": first_account_address, "keys": first_account_keys}),
         )?;
-         */
 
         Ok(())
     }
