@@ -183,6 +183,14 @@ impl CreateTestAccountArgs {
             "initial_account_transaction_hash:{}",
             initial_account_transaction_hash
         );
+        let (initial_account_block_hash, initial_account_block_summary) = node_client
+            .wait_until_finalized(&initial_account_transaction_hash)
+            .await?;
+        println!(
+            "Transaction finalized in block {}.",
+            initial_account_block_hash
+        );
+        println!("The outcome is {:#?}", initial_account_block_summary);
 
         // create first normal account
         let mut ars_infos = BTreeMap::new();
@@ -272,6 +280,14 @@ impl CreateTestAccountArgs {
             "first_account_transaction_hash:{}",
             first_account_transaction_hash
         );
+        let (first_account_block_hash, first_account_block_summary) = node_client
+            .wait_until_finalized(&first_account_transaction_hash)
+            .await?;
+        println!(
+            "Transaction finalized in block {}.",
+            first_account_block_hash
+        );
+        println!("The outcome is {:#?}", first_account_block_summary);
 
         // output WalletAccount json file
         let output_file = if let Some(output) = self.output {
