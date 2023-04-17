@@ -12,7 +12,12 @@ rust-version = "1.68.1"
 [dependencies]
 anyhow = { version = "1.0.70", features = ["backtrace"] }
 thiserror = "1.0.40"
+serde = { version = "1.0.160", features = ["derive"] }
+serde_json = "1.0.96"
+chrono = { version = "0.4.24", features = ["serde"] }
 clap = { version = "4.2.2", features = ["cargo", "derive"] }
 futures = { version = "0.3.28" }
 tokio = { version = "1.27.0", features = ["full"] }
+# the rand version must be the same with the one that was depended on inside `concordium_base`.
+rand = { version = "0.7", features = ["small_rng"] }
 concordium-rust-sdk = { version = "2.3.0" }

@@ -1437,9 +1437,13 @@ name = "overlay-e2e-tests"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "chrono",
  "clap",
  "concordium-rust-sdk",
  "futures",
+ "rand 0.7.3",
+ "serde",
+ "serde_json",
  "thiserror",
  "tokio",
 ]
