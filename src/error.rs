@@ -60,3 +60,9 @@ impl From<serde_json::Error> for Error {
         }
     }
 }
+
+impl From<anyhow::Error> for Error {
+    fn from(value: anyhow::Error) -> Self {
+        Self::SystemError { cause: value }
+    }
+}

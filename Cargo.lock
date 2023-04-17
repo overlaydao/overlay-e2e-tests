@@ -1440,6 +1440,7 @@ dependencies = [
  "chrono",
  "clap",
  "concordium-rust-sdk",
+ "either",
  "futures",
  "rand 0.7.3",
  "serde",
