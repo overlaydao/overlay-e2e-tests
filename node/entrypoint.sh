@@ -1,6 +1,7 @@
 #!/bin/bash
 
 GENESIS_DIR=/root/workdir/genesis
+SECRETS_DIR=/root/secrets
 DATADIR=/root/workdir/node-0
 
 # generate genesis files
@@ -25,5 +26,5 @@ concordium-node \
    --grpc2-listen-port 11000 \
    --data-dir ${DATADIR} \
    --config-dir ${DATADIR} \
-   --baker-credentials-file ${GENESIS_DIR}/bakers/baker-0-credentials.json \
+   --baker-credentials-file ${SECRETS_DIR}/bakers/baker-0-credentials.json \
    --debug=

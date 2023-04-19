@@ -82,7 +82,7 @@ RUN git clone https://github.com/Concordium/concordium-misc-tools.git; \
 WORKDIR /root/workdir
 
 # add configs for genesis data
-COPY genesis/* /root/
+COPY genesis /root/
 
 # add utility scripts
 ADD ./entrypoint.sh /usr/local/bin/entrypoint.sh

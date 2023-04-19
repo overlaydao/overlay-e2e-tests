@@ -18,33 +18,33 @@ kind = "generate"
 genesisString = "overlay-local-dev"
 
 [[anonymityRevokers]]
-kind = "fresh"
-id = 1
-repeat = 3
+kind = "existing"
+source = "/root/anonymity-revokers/ar-info-1.json"
+
+[[anonymityRevokers]]
+kind = "existing"
+source = "/root/anonymity-revokers/ar-info-2.json"
 
 [[identityProviders]]
-kind = "fresh"
-id = 0
-repeat = 3
+kind = "existing"
+source = "/root/identity-providers/ip-info-0.json"
+
+[[identityProviders]]
+kind = "existing"
+source = "/root/identity-providers/ip-info-1.json"
 
 [[accounts]]
-kind = "fresh"
+kind = "existing"
+source = "/root/accounts/baker-0.json"
 balance = "1000000000000000"
 stake = "500000000000000"
-template = "baker"
-identityProvider = 0
-numKeys = 1
-threshold = 1
-repeat = 5
+restakeEarnings = true
+bakerKeys = "/root/secrets/bakers/baker-0-credentials.json"
 
 [[accounts]]
-kind = "fresh"
+kind = "existing"
+source = "/root/accounts/foundation-1.json"
 balance = "1000000000000000"
-template = "foundation"
-identityProvider = 0
-numKeys = 1
-threshold = 1
-repeat = 1
 foundation = true
 
 [updates]

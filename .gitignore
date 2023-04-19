@@ -31,5 +31,5 @@ target/
 # docker compose container data
 .docker-data/
 
-# outputs
-accounts/
+# tmp
+tmp/

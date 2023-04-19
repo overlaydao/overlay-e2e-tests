@@ -1,0 +1,69 @@
+{
+  "accountKeys": {
+    "keys": {
+      "0": {
+        "keys": {
+          "0": {
+            "signKey": "9b3ab6bf35e85cbc2e1990f9b823ffcaa57339788469114dc68ab9419d6c04e7",
+            "verifyKey": "2881c99cafaef28e678d1e3962b2d2b58edbf67dd29c59a4bef07cc310cfa50a"
+          }
+        },
+        "threshold": 1
+      }
+    },
+    "threshold": 1
+  },
+  "aci": {
+    "credentialHolderInformation": {
+      "idCredSecret": "03c1db434f94fc511185c154130117b4146451afee1b6910e1d5f94baa3b50f5"
+    },
+    "prfKey": "0d6e856012e18c8358e6f106957ddaee251dce737f5af14bf5a1d0eae66fa63d"
+  },
+  "address": "4RTrmQ46r2dRgYE5r2b8Cv5dhR5Tc4QAGZQHjRSkaMyUhcFiCy",
+  "credentials": {
+    "v": 0,
+    "value": {
+      "0": {
+        "type": "normal",
+        "contents": {
+          "credentialPublicKeys": {
+            "keys": {
+              "0": {
+                "schemeId": "Ed25519",
+                "verifyKey": "2881c99cafaef28e678d1e3962b2d2b58edbf67dd29c59a4bef07cc310cfa50a"
+              }
+            },
+            "threshold": 1
+          },
+          "credId": "8199a0a42551eedf10134e04ad246222af5d6d16d89ae644d3b8ffb4091f1b263b9938749678e30479519f110a0f3d71",
+          "ipIdentity": 0,
+          "revocationThreshold": 1,
+          "arData": {
+            "1": {
+              "encIdCredPubShare": "8b7353b34561176901da99d31a8b7509db11bd4640085c861eb6cecaf4e18bd934e56fbe6be8f64244cfd4b7c7ea3d25abff900e1cfcbacaf77c2f438ebdd06dd710340aa6bedb639423a92bfb3503938b37ef081e2add565e015ebd06f7644c"
+            },
+            "2": {
+              "encIdCredPubShare": "923bc98e5aae4f2433d48fea66ad0a1469c650fdb1599d6aea20223c119835dcd7910b477c98927c9971ac048721ec2d8df596514dafa26f332cf83e3885d80f93ebf5f1ffd624ab0afb361bf3ae7865e05ec7c23e490c418d1ba2beb212b401"
+            }
+          },
+          "policy": {
+            "validTo": "202804",
+            "createdAt": "202304",
+            "revealedAttributes": {}
+          },
+          "commitments": {
+            "cmmPrf": "ad0d1542e4314a7560d986bfdad97b7392f08fb8eaffe1dac2e0cc944ec690888165c6451ce6ca22c9a7f00bd028949c",
+            "cmmCredCounter": "81dd1a27776dbf70294f2e693abe9ffbf7541c82f327d90613eacdc4aa85bb61aa6fcbe309ba3767edfc5229a96f31ee",
+            "cmmMaxAccounts": "93e8b0b36511015aebeac0a3750ed48d3649f9197bce5d5a32abfda75dfd076d75ffa9305c5fe5653a1b7ceb77c9c909",
+            "cmmAttributes": {},
+            "cmmIdCredSecSharingCoeff": [
+              "8e2160dfed86ed2af20a54101927f78066895f63d9f80c783e0e0de6dd725d2c78c5c04145d3aa8f6072e42819ae27c5"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "encryptionPublicKey": "b14cbfe44a02c6b1f78711176d5f437295367aa4f2a8c2551ee10d25a03adc69d61a332a058971919dad7312e1fc94c58199a0a42551eedf10134e04ad246222af5d6d16d89ae644d3b8ffb4091f1b263b9938749678e30479519f110a0f3d71",
+  "encryptionSecretKey": "b14cbfe44a02c6b1f78711176d5f437295367aa4f2a8c2551ee10d25a03adc69d61a332a058971919dad7312e1fc94c53c238095b37d04a08e8bac14e62a0b614cfbd7faf67bdb9c1af80ac08cbe6022"
+}
