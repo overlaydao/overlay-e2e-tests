@@ -1,7 +1,7 @@
 [package]
 name = "overlay-e2e-tests"
 version = "0.1.0"
-authors = ["Hiroki Tanaka <support@kumano-te.com>"]
+authors = ["Hiroki Tanaka <hiroki.tanaka@kumano-te.com>"]
 edition = "2021"
 license-file = "LICENSE"
 include = ["README.md"]
