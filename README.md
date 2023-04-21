@@ -11,12 +11,12 @@ configuration data to run the node.
 
 In this project, we prepare the set of configurations described as below.
 
-🚧 WARNING **Please do not use the same credentials for production environment** 🚧
+🚧 WARNING **Do not use the same credentials for production environment** 🚧
 
 | Name                       | Content                                                                                                          |
 |----------------------------|------------------------------------------------------------------------------------------------------------------|
 | baker account address      | 4NFzjJZ9hr3CWMTi7s9rrKofchCGeGMDbU9xnRpmynnc2hSKpi                                                               |
-| baker account secrets      | [node/genesis/accounts/foundation-1.json](node/genesis/accounts/baker-0.json)                                    |
+| baker account secrets      | [node/genesis/accounts/baker-0.json](node/genesis/accounts/baker-0.json)                                    |
 | foundation account address | 4RTrmQ46r2dRgYE5r2b8Cv5dhR5Tc4QAGZQHjRSkaMyUhcFiCy                                                               |
 | foundation account secrets | [node/genesis/accounts/foundation-1.json](node/genesis/accounts/foundation-1.json)                               |
 | identity provider 0        | [node/genesis/secrets/identity-providers/ip-data-0.json](node/genesis/secrets/identity-providers/ip-data-0.json) |
