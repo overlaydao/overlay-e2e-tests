@@ -227,11 +227,11 @@ At the top of this project directory, hit the following commands to build.
 
 ```shell
 # create initial account
-% ./target/debug/overlay-e2e-tests test-account create --identity-provider="$(pwd)/node/genesis/secrets/identity-providers/ip-data-0.json" --anonymity-revoker="$(pwd)/node/genesis/secrets/anonymity-revokers/ar-data-1.json" --output=tmp/test.json
+% cargo overlay-e2e-tests test-account create --identity-provider="$(pwd)/node/genesis/secrets/identity-providers/ip-data-0.json" --anonymity-revoker="$(pwd)/node/genesis/secrets/anonymity-revokers/ar-data-1.json" --output=tmp/test.json
 
 # get account information
-% ./target/debug/overlay-e2e-tests test-account get --address=4TL3MZVnSrUBcPh5DQKPsjrnmfm9x6XCRS6U9V1XF2e7dLXx4n
+% cargo overlay-e2e-tests test-account get --address=4TL3MZVnSrUBcPh5DQKPsjrnmfm9x6XCRS6U9V1XF2e7dLXx4n
 
 # send ccd from foundation account to a test account.
-% ./target/debug/overlay-e2e-tests test-account send-ccd --from="$(pwd)/node/genesis/accounts/foundation-1.json" --amount=1 --to=4TL3MZVnSrUBcPh5DQKPsjrnmfm9x6XCRS6U9V1XF2e7dLXx4n
+% cargo overlay-e2e-tests test-account send-ccd --from="$(pwd)/node/genesis/accounts/foundation-1.json" --amount=1 --to=4TL3MZVnSrUBcPh5DQKPsjrnmfm9x6XCRS6U9V1XF2e7dLXx4n
 ```
