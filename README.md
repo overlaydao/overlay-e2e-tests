@@ -234,4 +234,7 @@ At the top of this project directory, hit the following commands to build.
 
 # send ccd from foundation account to a test account.
 % cargo overlay-e2e-tests test-account send-ccd --from="$(pwd)/node/genesis/accounts/foundation-1.json" --amount=1 --to=4TL3MZVnSrUBcPh5DQKPsjrnmfm9x6XCRS6U9V1XF2e7dLXx4n
+
+# init contract
+% cargo overlay-e2e-tests contract init --account="$(pwd)/tmp/test.json" --wasm="$(pwd)/contracts/overlay-users/target/concordium/wasm32-unknown-unknown/release/overlay_users.wasm.v1" --name=overlay-users --output=tmp/test_overlay_users.json
 ```

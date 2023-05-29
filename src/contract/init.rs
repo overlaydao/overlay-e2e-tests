@@ -18,7 +18,7 @@ use concordium_rust_sdk::{
     v2::{Client as NodeClient, Endpoint},
 };
 use std::{io::Cursor, path::PathBuf, str::FromStr};
-use tracing::{error, info};
+use tracing::info;
 
 #[derive(Args)]
 pub struct InitContractArgs {
@@ -107,10 +107,9 @@ impl InitContractArgs {
                 &self.account
             ))
         })?;
-        let from_account = WalletAccount::from_json_str(&wallet_file_content).map_err(|err| {
-            error!("{:?}", err);
+        let from_account = WalletAccount::from_json_str(&wallet_file_content).map_err(|_| {
             Error::new_invalid_argument_error(format!(
-                "could not parse account json file. path: {:?}",
+                "could not parse account json string to wallet account. path: {:?}",
                 &self.account
             ))
         })?;
