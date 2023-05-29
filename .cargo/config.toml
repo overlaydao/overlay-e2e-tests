@@ -1,0 +1,2 @@
+[alias]
+overlay-e2e-tests = "run -p overlay-e2e-tests --"

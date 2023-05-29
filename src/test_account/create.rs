@@ -67,8 +67,10 @@ pub struct CreateTestAccountArgs {
 }
 
 #[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
 struct CreateAccountOutputs {
     address: AccountAddress,
+    #[serde(rename = "account_keys")]
     keys: AccountKeys,
 }
 
