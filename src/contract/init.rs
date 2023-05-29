@@ -1,6 +1,7 @@
 mod supported_contracts;
 use supported_contracts::{overlay_projects, ContractName};
 
+use crate::contract::init::supported_contracts::overlay_sales;
 use crate::{Error, Result};
 use anyhow::anyhow;
 use clap::Args;
@@ -40,7 +41,7 @@ pub struct InitContractArgs {
     #[arg(long, help = "Contract name to init.")]
     name: String,
 
-    #[arg(long, help = "Path to init params build in json format.")]
+    #[arg(long, help = "Path to init params binary file.")]
     params: Option<PathBuf>,
 }
 
@@ -49,9 +50,9 @@ impl InitContractArgs {
         // check name & params
         let contract_name = ContractName::from_str(&self.name)?;
         let param = if let Some(params_file_path) = &self.params {
-            let params_file_content = std::fs::read_to_string(params_file_path).map_err(|_| {
+            let params_file_content = std::fs::read(params_file_path).map_err(|_| {
                 Error::new_invalid_argument_error(format!(
-                    "could not read params json file. path: {:?}",
+                    "could not read params binary file. path: {:?}",
                     params_file_path
                 ))
             })?;
@@ -59,21 +60,38 @@ impl InitContractArgs {
                 ContractName::OverlayUsers => OwnedParameter::default(),
                 ContractName::OverlayProjects => {
                     let params: overlay_projects::UpdateContractStateParams =
-                        serde_json::from_str(&params_file_content).map_err(|_| {
-                            Error::new_invalid_argument_error(format!(
-                                "could not parse params json file. path: {:?}",
-                                params_file_path
-                            ))
-                        })?;
-                    let params_bytes = common::to_bytes(&params);
+                        concordium_std::from_bytes(params_file_content.as_slice()).map_err(
+                            |_| {
+                                Error::new_invalid_argument_error(format!(
+                                    "could not parse params. path: {:?}",
+                                    params_file_path
+                                ))
+                            },
+                        )?;
+                    let params_bytes = concordium_std::to_bytes(&params);
                     params_bytes.try_into().map_err(|_| {
                         Error::new_invalid_argument_error(format!(
-                            "could not parse params json value to init parameters. path: {:?}",
+                            "could not parse params binary value to init parameters. path: {:?}",
                             params_file_path
                         ))
                     })?
                 },
-                ContractName::OverlaySales => todo!(),
+                ContractName::OverlaySales => {
+                    let params: overlay_sales::InitParams =
+                        concordium_std::from_bytes(&params_file_content).map_err(|_| {
+                            Error::new_invalid_argument_error(format!(
+                                "could not parse params. path: {:?}",
+                                params_file_path
+                            ))
+                        })?;
+                    let params_bytes = concordium_std::to_bytes(&params);
+                    params_bytes.try_into().map_err(|_| {
+                        Error::new_invalid_argument_error(format!(
+                            "could not parse params binary value to init parameters. path: {:?}",
+                            params_file_path
+                        ))
+                    })?
+                },
             }
         } else {
             OwnedParameter::default()

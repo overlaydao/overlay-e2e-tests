@@ -25,3 +25,5 @@ tracing-subscriber = { version = "0.3.17" }
 rand = { version = "0.7", features = ["small_rng"] }
 concordium-rust-sdk = { version = "2.3.0" }
 concordium_base = { version = "1" }
+concordium-std = { version = "6.1.0", default-features = false, features = ["std"] }
+concordium-cis2 = { vedrsion = "3.0.0" }

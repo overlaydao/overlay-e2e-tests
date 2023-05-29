@@ -423,6 +423,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "acbf1af155f9b9ef647e42cdc158db4b64a1b61f743629225fde6f3e0be2a7c7"
 
 [[package]]
+name = "concordium-cis2"
+version = "3.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "80fb245add5b85a3d8ab111a5a0c8760caf18b1e63ac86d58d6d8a15289fd6f1"
+dependencies = [
+ "concordium-std",
+ "primitive-types",
+]
+
+[[package]]
 name = "concordium-contracts-common"
 version = "5.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -430,7 +440,7 @@ checksum = "2bd5cddd63af3a1682139d85f42aeb518dc9a0b6b4230afa9a1b716a57cae58f"
 dependencies = [
  "bs58",
  "chrono",
- "concordium-contracts-common-derive",
+ "concordium-contracts-common-derive 1.0.1",
  "fnv",
  "hashbrown 0.11.2",
  "hex",
@@ -444,10 +454,32 @@ dependencies = [
 ]
 
 [[package]]
+name = "concordium-contracts-common"
+version = "6.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6b03d120efcfc1c4b52209d4553302fa71683df4159cf5352927425ae8ed657f"
+dependencies = [
+ "concordium-contracts-common-derive 2.0.0",
+ "fnv",
+ "hashbrown 0.11.2",
+]
+
+[[package]]
 name = "concordium-contracts-common-derive"
 version = "1.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "84ca43d948ffa533b5f898e4abcee1723b7b7e50536a41aa38131929b037c082"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 1.0.109",
+]
+
+[[package]]
+name = "concordium-contracts-common-derive"
+version = "2.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "434938667ab95bd21adb63289008690839d967eb23ead39d82f0dd2cd3b97c68"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -492,7 +524,7 @@ checksum = "2ab16b62a8d8c29ceeee896896d3a6d46294daf99c54a34035e3f65404d7434f"
 dependencies = [
  "anyhow",
  "byteorder",
- "concordium-contracts-common",
+ "concordium-contracts-common 5.3.1",
  "concordium-wasm",
  "derive_more",
  "ed25519-zebra",
@@ -510,13 +542,35 @@ dependencies = [
 ]
 
 [[package]]
+name = "concordium-std"
+version = "6.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "be15c99a7effe3dccdba34dd666172a1236cbebba1bb29a6c3d47ab653153cd2"
+dependencies = [
+ "concordium-contracts-common 6.0.0",
+ "concordium-std-derive",
+]
+
+[[package]]
+name = "concordium-std-derive"
+version = "5.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0fb31ccffc667d355936f4e0482cee1d393d119e65d1c30ce08fe96f51802031"
+dependencies = [
+ "concordium-contracts-common 6.0.0",
+ "proc-macro2",
+ "quote",
+ "syn 1.0.109",
+]
+
+[[package]]
 name = "concordium-wasm"
 version = "1.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "42001bbf50105ce129b5112618be07c777b70dab04a9d33508fedcc9bb52e9c0"
 dependencies = [
  "anyhow",
- "concordium-contracts-common",
+ "concordium-contracts-common 5.3.1",
  "derive_more",
  "leb128",
  "num_enum",
@@ -532,7 +586,7 @@ dependencies = [
  "bs58",
  "byteorder",
  "chrono",
- "concordium-contracts-common",
+ "concordium-contracts-common 5.3.1",
  "concordium_base_derive",
  "curve25519-dalek",
  "derive_more",
@@ -635,6 +689,12 @@ checksum = "3c063cd8cc95f5c377ed0d4b49a4b21f632396ff690e8470c29b3359b346984b"
 dependencies = [
  "cfg-if",
 ]
+
+[[package]]
+name = "crunchy"
+version = "0.2.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7a81dae078cea95a014a339291cec439d2f232ebe854a9d672b796c6afafa9b7"
 
 [[package]]
 name = "crypto-common"
@@ -823,6 +883,15 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 1.0.109",
+]
+
+[[package]]
+name = "fixed-hash"
+version = "0.7.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "cfcf0ed7fe52a17a03854ec54a9f76d6d84508d1c0e66bc1793301c73fc8493c"
+dependencies = [
+ "static_assertions",
 ]
 
 [[package]]
@@ -1455,7 +1524,9 @@ dependencies = [
  "anyhow",
  "chrono",
  "clap",
+ "concordium-cis2",
  "concordium-rust-sdk",
+ "concordium-std",
  "concordium_base",
  "either",
  "futures",
@@ -1552,6 +1623,16 @@ name = "ppv-lite86"
 version = "0.2.17"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5b40af805b3121feab8a3c29f04d8ad262fa8e0561883e7653e024ae4479e6de"
+
+[[package]]
+name = "primitive-types"
+version = "0.11.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e28720988bff275df1f51b171e1b2a18c30d194c4d2b61defdacecd625a5d94a"
+dependencies = [
+ "fixed-hash",
+ "uint",
+]
 
 [[package]]
 name = "proc-macro-crate"
@@ -2010,6 +2091,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "static_assertions"
+version = "1.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a2eb9349b6444b326872e140eb1cf5e7c522154d69e7a0ffb0fb81c06b37543f"
+
+[[package]]
 name = "strsim"
 version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2348,6 +2435,18 @@ name = "typenum"
 version = "1.16.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "497961ef93d974e23eb6f433eb5fe1b7930b659f06d12dec6fc44a8f554c0bba"
+
+[[package]]
+name = "uint"
+version = "0.9.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "76f64bba2c53b04fcab63c01a7d7427eadc821e3bc48c34dc9ba29c501164b52"
+dependencies = [
+ "byteorder",
+ "crunchy",
+ "hex",
+ "static_assertions",
+]
 
 [[package]]
 name = "unicode-ident"

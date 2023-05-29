@@ -59,13 +59,53 @@ impl FromStr for ContractName {
 }
 
 pub mod overlay_projects {
-    use concordium_base::common::Serial;
-    use concordium_rust_sdk::smart_contracts::common::ContractAddress;
-    use serde::Deserialize;
+    use concordium_std::{ContractAddress, Deserial, SchemaType, Serial};
 
-    #[derive(Serial, Deserialize)]
+    #[derive(Debug, Serial, Deserial, SchemaType)]
     pub struct UpdateContractStateParams {
         staking_contract_addr: ContractAddress,
         user_contract_addr: ContractAddress,
+    }
+}
+
+pub mod overlay_sales {
+    use concordium_std::{
+        collections::BTreeMap, AccountAddress, Address, Duration, SchemaType, Serialize, Timestamp,
+    };
+
+    #[derive(Debug, Serialize, SchemaType)]
+    pub struct InitParams {
+        /// Account of the administrator of the entity running the IDO
+        proj_admin: AccountAddress,
+        /// Address of Overlay for receiving sale fee
+        addr_ovl: Address,
+        /// Address of Overlay for buy back burn
+        addr_bbb: Address,
+        /// IDO schedule(The process is split into some phases)
+        open_at: BTreeMap<Timestamp, Prior>,
+        /// Sale End Time
+        close_at: Timestamp,
+        /// User(sale particicants) can withdraw assets according to the vesting period
+        vesting_period: BTreeMap<Duration, AllowedPercentage>,
+        /// Swap price of the project token
+        price_per_token: MicroCcd,
+        /// Amount of project tokens contained in a unit
+        token_per_unit: ContractTokenAmount,
+        /// Hardcap
+        max_units: UnitsAmount,
+        /// Softcap
+        min_units: UnitsAmount,
+    }
+
+    pub type AllowedPercentage = u8;
+    pub type MicroCcd = u64;
+    pub type ContractTokenAmount = concordium_cis2::TokenAmountU64;
+    pub type UnitsAmount = u32;
+
+    #[derive(Debug, Serialize, SchemaType)]
+    pub enum Prior {
+        TOP = 1,
+        SECOND,
+        ANY = 99,
     }
 }
