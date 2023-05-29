@@ -12,7 +12,7 @@ use concordium_rust_sdk::{
     },
     types::{
         smart_contracts::{ModuleReference, OwnedContractName, OwnedParameter, WasmModule},
-        transactions, AccountTransactionEffects, BlockItemSummaryDetails, ContractAddress,
+        transactions, AccountTransactionEffects, BlockItemSummaryDetails, ContractAddress, Energy,
         RejectReason, TransactionType, WalletAccount,
     },
     v2::{Client as NodeClient, Endpoint},
@@ -43,6 +43,9 @@ pub struct InitContractArgs {
 
     #[arg(long, help = "Path to init params binary file.")]
     params: Option<PathBuf>,
+
+    #[arg(long, help = "Destination contract address file path.")]
+    output: Option<PathBuf>,
 }
 
 impl InitContractArgs {
@@ -146,11 +149,30 @@ impl InitContractArgs {
             mod_ref: module_ref,
             param,
         };
-        let contract_address = init_contract(&mut node_client, payload).await?;
+        let contract_address = init_contract(&mut node_client, &from_account, payload).await?;
         println!(
             "Initialized contract, address: ({}, {})",
             contract_address.index, contract_address.subindex
         );
+        // output account address json file
+        let output_file = if let Some(output) = self.output {
+            output
+        } else {
+            let mut output = std::env::current_dir().expect("must retrieve current directory...");
+            output.push("contracts");
+            output.push(format!("init_{}_address.json", contract_name));
+            output
+        };
+        if let Some(parent_dir) = output_file.parent() {
+            if !parent_dir.exists() {
+                println!("output directory created: {:?}", parent_dir);
+                std::fs::create_dir_all(parent_dir)?;
+            }
+        }
+        serde_json::to_writer_pretty(
+            std::fs::File::create(output_file)?,
+            &serde_json::json!(contract_address),
+        )?;
         Ok(())
     }
 }
@@ -234,8 +256,59 @@ async fn deploy_module(
 }
 
 async fn init_contract(
-    _node_client: &mut NodeClient,
-    _payload: transactions::InitContractPayload,
+    node_client: &mut NodeClient,
+    from_account: &WalletAccount,
+    payload: transactions::InitContractPayload,
 ) -> Result<ContractAddress> {
-    todo!()
+    let nonce = node_client
+        .get_next_account_sequence_number(&from_account.address)
+        .await?;
+    if !nonce.all_final {
+        return Err(Error::SystemError {
+            cause: anyhow!(
+                "There are unfinalized transactions. Transaction nonce is not reliable enough."
+            ),
+        });
+    }
+    let expiry = TransactionTime::from_seconds((chrono::Utc::now().timestamp() + 300) as u64);
+    let energy = Energy { energy: 5000 };
+    let tx = transactions::send::init_contract(
+        from_account,
+        from_account.address,
+        nonce.nonce,
+        expiry,
+        payload,
+        energy,
+    );
+    let block_item = transactions::BlockItem::AccountTransaction(tx);
+    let tx_hash = node_client.send_block_item(&block_item).await?;
+    let (_, block_item) = node_client.wait_until_finalized(&tx_hash).await?;
+    match block_item.details {
+        BlockItemSummaryDetails::AccountTransaction(account_transaction_details) => {
+            match account_transaction_details.effects {
+                AccountTransactionEffects::None {
+                    transaction_type,
+                    reject_reason,
+                } => {
+                    if transaction_type != Some(TransactionType::InitContract) {
+                        return Err(Error::SystemError {
+                            cause: anyhow!(
+                                "Expected transaction type to be InitContract if rejected."
+                            ),
+                        });
+                    }
+                    return Err(Error::SystemError {
+                        cause: anyhow!("contract init rejected with reason: {reject_reason:?}"),
+                    });
+                },
+                AccountTransactionEffects::ContractInitialized { data } => Ok(data.address),
+                _ => Err(Error::SystemError {
+                    cause: anyhow!("invalid transaction effects"),
+                }),
+            }
+        },
+        _ => Err(Error::SystemError {
+            cause: anyhow!("Expected Account transaction"),
+        }),
+    }
 }
